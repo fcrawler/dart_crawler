@@ -3,7 +3,8 @@ import 'person.dart';
 void main() {
   // 使用关键字`var`声明一个变量
   var name = "teaphy";
-
+  
+  
   var age;
   age = 10;
   
