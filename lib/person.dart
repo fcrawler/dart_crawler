@@ -4,4 +4,10 @@ class Person {
 
   Person(this.age, this.name);
 
+  @override
+  String toString() {
+    return 'Person{age: $age, name: $name}';
+  }
+  
+  
 }
