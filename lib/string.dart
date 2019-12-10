@@ -53,7 +53,7 @@ void main() {
   print("rawstr: $rawstr");
   print("nRawStr: $nRawStr");
 
-  // 字符串字面量是编译时常量时,可用类型
+  // 4. 字符串字面量是编译时常量时,可用类型有num、String、null或bool。
   const aConstNum = 0;
   const aConstBool = true;
   const aConstString = 'a constant string';
@@ -65,8 +65,37 @@ void main() {
   const aConstList = [1, 2, 3];
 
   const validConstString = '$aConstNum $aConstBool $aConstString'; // validConstString: 0 true a constant string
-//  const validConstString = '$aConstNum $aConstBool $aConstString $aConstList';
+	//  const validConstString = '$aConstNum $aConstBool $aConstString $aConstList';
   print("validConstString: $validConstString");
+  
+  // 5. 字符串是UTF-16编码单元的不可变序列。
+  String tStr = "teaphy";
+  var tCodeUnit = tStr.codeUnitAt(0); // 116
+  var listCodeUnit = tStr.codeUnits; // [116, 101, 97, 112, 104, 121]
+  var descCodeUnit = tStr[0]; // t
+  var tRunes = tStr.runes; // (116, 101, 97, 112, 104, 121)
+  
+  print("tCodeUnit: $tCodeUnit");
+  print("listCodeUnit: $listCodeUnit");
+  print("descCodeUnit: $descCodeUnit");
+  print("tRunes: $tRunes");
+  
+  var muiStr = "t\u{1D11E}";
+  var muiCodeUnit = muiStr.codeUnits; // [0x0074, 0xd834, 0xdd1e]
+  var muiRunes = muiStr.runes; // [[0x0074, 0x1d11e]
+  
+  for (var codeUnit in muiCodeUnit) {
+  	print("codeUnit: ${codeUnit.toRadixString(16)}");
+  }
+  
+  for (var rune in muiRunes.toList()) {
+	  print("rune: ${rune.toRadixString(16)}");
+  }
+  
+  print("muiCodeUnit: $muiCodeUnit");
+  print("muiRunes: $muiRunes");
+  
+
   
   // Operate
   String operRes = "aaa";
