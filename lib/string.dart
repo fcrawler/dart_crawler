@@ -52,4 +52,26 @@ void main() {
                                                            // gets special treatment.
   print("rawstr: $rawstr");
   print("nRawStr: $nRawStr");
+
+  // 字符串字面量是编译时常量时,可用类型
+  const aConstNum = 0;
+  const aConstBool = true;
+  const aConstString = 'a constant string';
+
+  // 字符串字面量是编译时常量时,不可用类型
+  var aNum = 0;
+  var aBool = true;
+  var aString = 'a string';
+  const aConstList = [1, 2, 3];
+
+  const validConstString = '$aConstNum $aConstBool $aConstString'; // validConstString: 0 true a constant string
+//  const validConstString = '$aConstNum $aConstBool $aConstString $aConstList';
+  print("validConstString: $validConstString");
+  
+  // Operate
+  String operRes = "aaa";
+  String opeResMul = operRes * 3;
+  
+  print("opeResMul: $opeResMul");
+
 }
