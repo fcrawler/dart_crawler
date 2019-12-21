@@ -120,7 +120,8 @@ void main() {
 
   for (Match m in matchAll) {
     String match =
-        "pattern: ${m.group(0)}, start: ${m.start}, end: ${m.end}, input: ${m.input}, groupCount: ${m.groupCount}";
+        "pattern: ${m.group(0)}, start: ${m.start}, end: ${m.end}, input: ${m
+        .input}, groupCount: ${m.groupCount}";
     print("matchAll - match: $match");
   }
 
@@ -128,7 +129,8 @@ void main() {
 
   for (Match m_ in matchAll_) {
     String match =
-        "pattern: ${m_.group(0)}, start: ${m_.start}, end: ${m_.end}, input: ${m_.input}, groupCount: ${m_.groupCount}";
+        "pattern: ${m_.group(0)}, start: ${m_.start}, end: ${m_
+        .end}, input: ${m_.input}, groupCount: ${m_.groupCount}";
     print("matchAll_ - match: $match");
   }
 
@@ -136,7 +138,8 @@ void main() {
 
   for (Match m_ in expAll) {
     String match =
-        "pattern: ${m_.group(0)}, start: ${m_.start}, end: ${m_.end}, input: ${m_.input}, groupCount: ${m_.groupCount}";
+        "pattern: ${m_.group(0)}, start: ${m_.start}, end: ${m_
+        .end}, input: ${m_.input}, groupCount: ${m_.groupCount}";
     print("expAll $match");
   }
 
@@ -172,4 +175,47 @@ void main() {
   print("bToa: $bToa");
   print("aToa: $aToa");
 
+  // 填充指定宽度的字符串
+  var padResource = "teaphy"; // length: 6
+
+  // "teaphy"的长度为6，指定宽度为10，字符串的长度小于指定宽度。
+  // 此时，对于长度小于宽度的每个位置，使用指定的padding进行填充。
+  // 如果没有指定padding，默认使用空格进行填充。
+  var padLeft1 = padResource.padLeft(10); // '    teaphy'
+  //  "teaphy"的长度为6，小于指定长度10，在其左边添加4个空格，并返回新的字符串
+  var padLeft2 = padResource.padLeft(10, "123"); // '123123123123teaphy'
+  // 当指定宽度小于或等于字符串的长度时，则不做任何填充。
+  var padLeft3 = padResource.padLeft(6); // 'teaphy'
+  var padLeft4 = padResource.padLeft(5); // 'teaphy'
+
+
+  // "teaphy"的长度为6，小于指定长度10，在其右边添加4个空格，并返回新的字符串
+  var padRight = padResource.padRight(10); // 'teaphy    '
+
+
+  print("padLeft1: \'$padLeft1\'");
+  print("padLeft2: \'$padLeft2\'");
+  print("padLeft3: \'$padLeft3\'");
+  print("padLeft4: \'$padLeft4\'");
+  print("padRight: \'$padRight\'");
+
+  // 替换字符串
+  var replaceRes = "teaphy teaphy";
+  //
+  var replaceAll = replaceRes.replaceAll("tea", "zzzz"); // 'zzzzphy zzzzphy'
+  var replaceFirst = replaceRes.replaceFirst("tea", "zzzz"); // 'zzzzphy teaphy'
+  var replaceRange = replaceRes.replaceRange(
+      1, 3, "zzzzbbbb"); // 'tzzzzbbbbphy teaphy'
+
+  var replaceAllMapped = replaceRes.replaceAllMapped("tea", (match) {
+
+
+    return match.start > 3 ? "aaaa" : "bbbb";
+  });
+
+
+  print("replaceAll: \'$replaceAll\'");
+  print("replaceFirst: \'$replaceFirst\'");
+  print("replaceRange: \'$replaceRange\'");
+  print("replaceAllMapped: \'$replaceAllMapped\'");
 }
