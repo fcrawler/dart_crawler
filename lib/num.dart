@@ -1,12 +1,10 @@
-
 void main() {
-
   // 常用属性
   // 正无穷大
   var infinitePlus = double.infinity;
   // 负无穷大
   var infiniteMinus = -double.infinity;
-  var nanRes =  double.nan;
+  var nanRes = double.nan;
   // int
   var intPositive = 1;
   var intNegative = -1;
@@ -27,7 +25,6 @@ void main() {
   print("doubleNegative.isFinite: ${doubleNegative.isFinite}"); // true
 
   print("-----------------------------------");
-
 
   // isInfinite 判断数字是不是正无穷大或负无穷大。
   print("infinitePlus.isInfinite: ${infinitePlus.isInfinite}"); // true
@@ -51,7 +48,6 @@ void main() {
 
   print("-----------------------------------");
 
-
   // isNegative 判断数字是不是负数
   print("infinitePlus.isNegative: ${infinitePlus.isNegative}"); // false
   print("infiniteMinus.isNegative: ${infiniteMinus.isNegative}"); // true
@@ -60,7 +56,6 @@ void main() {
   print("intNegative.isNegative: ${intNegative.isNegative}"); // true
   print("doublePositive.isNegative: ${doublePositive.isNegative}"); // false
   print("doubleNegative.isNegative: ${doubleNegative.isNegative}"); // true
-
 
   print("-----------------------------------");
 
@@ -74,7 +69,6 @@ void main() {
   print("doubleNegative.sign: ${doubleNegative.sign}"); // -1.0
   print("zeroPositive.sign: ${zeroPositive.sign}"); // 0.0
   print("zeroNegative.sign: ${zeroNegative.sign}"); // -0.0
-
 
   print("-----------------------------------");
 
@@ -125,7 +119,6 @@ void main() {
   print("3.3.clamp(4, 6) = ${3.3.clamp(4, 6)}"); // 4
   print("3.3.clamp(0, 2) = ${3.3.clamp(0, 2)}"); // 2
 
-
   print("-----------------------------------");
 
   // compareTo
@@ -141,6 +134,134 @@ void main() {
 
   print("(-0.0).compareTo(0.0) = ${(-0.0).compareTo(0.0)}"); // -1
   print("(-0.0).compareTo(0) = ${(-0.0).compareTo(0)}"); // -1
-  print("double.nan.compareTo(double.nan) = ${double.nan.compareTo(double.nan)}"); // 0
-  print("double.nan.compareTo(double.infinity) = ${double.nan.compareTo(double.infinity)}"); // 1
+  print(
+      "double.nan.compareTo(double.nan) = ${double.nan.compareTo(double.nan)}"); // 0
+  print(
+      "double.nan.compareTo(double.infinity) = ${double.nan.compareTo(double.infinity)}"); // 1
+
+  print("-----------------------------------");
+
+  // floor
+  print("3.floor() = ${3.floor()}"); // 3
+  print("3.3.floor() = ${3.3.floor()}"); // 3
+  print("3.5.floor() = ${3.5.floor()}"); // 3
+  print("3.7.floor() = ${3.7.floor()}"); // 3
+  print("-3.3.floor() = ${-3.3.floor()}"); // -3
+  print("-3.5.floor() = ${-3.5.floor()}"); // -3
+  print("-3.7.floor() = ${-3.7.floor()}"); // -3
+  print("-1.0.floor() = ${-1.0.floor()}"); // -1
+  print("-0.7.floor() = ${-0.7.floor()}"); // 0
+  print("-0.0.floor() = ${-0.0.floor()}"); // 0
+
+  print("-----------------------------------");
+
+  // floorToDouble
+  print("3.3.floorToDouble() = ${3.3.floorToDouble()}"); // 3.0
+  print("3.5.floorToDouble() = ${3.5.floorToDouble()}"); // 3.0
+  print("3.7.floorToDouble() = ${3.7.floorToDouble()}"); // 3.0
+  print("-3.3.floorToDouble() = ${-3.3.floorToDouble()}"); // -3.0
+  print("-3.5.floorToDouble() = ${-3.5.floorToDouble()}"); // -3.0
+  print("-3.7.floorToDouble() = ${-3.7.floorToDouble()}"); // -3.0
+  print("-1.0.floorToDouble() = ${-1.0.floorToDouble()}"); // -1.0
+  print("-0.7.floorToDouble() = ${-0.7.floorToDouble()}"); // -0.0
+  print("-0.0.floorToDouble() = ${-0.0.floorToDouble()}"); // -0.0
+  print(
+      "infinitePlus.floorToDouble() = ${infinitePlus.floorToDouble()}"); // Infinity
+  print(
+      "infiniteMinus.floorToDouble() = ${infiniteMinus.floorToDouble()}"); // -Infinity
+  print("nanRes.floorToDouble() = ${nanRes.floorToDouble()}"); // NaN
+
+  print("-----------------------------------");
+  
+  // remainder
+
+  print("2.remainder(3) = ${2.remainder(3)}"); // 2
+  print("2.0.remainder(3) = ${2.0.remainder(3)}"); // 2.0
+  print("2.remainder(3.0) = ${2.remainder(3.0)}"); // 2.0
+  print("2.0.remainder(3.0) = ${2.remainder(3.0)}"); // 2.0
+
+  print("-----------------------------------");
+  
+  // round
+  print("1.0.round() = ${1.0.round()}"); // 1
+  print("1.2.round() = ${1.2.round()}"); // 1
+  print("1.5.round() = ${1.5.round()}"); // 2
+  print("1.7.round() = ${1.7.round()}"); // 2
+  
+  print("-0.0.round() = ${0.0.round()}"); // 0
+  print("-0.2.round() = ${-0.2.round()}"); // 0
+  print("-0.5.round() = ${-0.5.round()}"); // -1
+  print("-0.7.round() = ${-0.7.round()}"); // -1
+  print("-1.0.round() = ${-1.0.round()}"); // -1
+
+  print("1.0.roundToDouble() = ${1.0.roundToDouble()}"); // 1.0
+  print("1.2.roundToDouble() = ${1.2.roundToDouble()}"); // 1.0
+  print("1.5.roundToDouble() = ${1.5.roundToDouble()}"); // 2.0
+  print("1.7.roundToDouble() = ${1.7.roundToDouble()}"); // 2.0
+
+  print("-0.0.roundToDouble() = ${0.0.roundToDouble()}"); // 0.0
+  print("-0.2.roundToDouble() = ${-0.2.roundToDouble()}"); // -0.0
+  print("-0.5.roundToDouble() = ${-0.5.roundToDouble()}"); // -1.0
+  print("-0.7.roundToDouble() = ${-0.7.roundToDouble()}"); // -1.0
+  print("-1.0.roundToDouble() = ${-1.0.roundToDouble()}"); // -1.0
+
+  print(
+		  "infinitePlus.roundToDouble() = ${infinitePlus.roundToDouble()}"); // Infinity
+  print(
+		  "infiniteMinus.roundToDouble() = ${infiniteMinus.roundToDouble()}"); // -Infinity
+  print("nanRes.roundToDouble() = ${nanRes.roundToDouble()}"); // Na
+
+  print("-----------------------------------");
+  
+	// to
+
+  // toInt
+  print("(0.1).toInt() = ${(0.1).toInt()}"); // 0
+  print("(1.2).toInt() = ${(1.2).toInt()}"); // 1
+  print("(1.5).toInt() = ${(1.5).toInt()}"); // 1
+  print("(1.7).toInt() = ${(1.7).toInt()}"); // 1
+  print("(1).toInt() = ${(1).toInt()}"); // 1
+  print("(-0.1).toInt() = ${(-0.1).toInt()}"); // 0
+  print("(-0.5).toInt() = ${(-0.5).toInt()}"); // 0
+  print("(-0.7).toInt() = ${(-0.7).toInt()}"); // 0
+  print("(-0.0).toInt() = ${(-0.0).toInt()}"); // 0
+  print("(-1.0).toInt() = ${(-1.0).toInt()}"); // -1
+
+  print("-----------------------------------");
+
+  // toDouble
+  print("(0.1).toDouble() = ${(0.1).toDouble()}"); // 0.1
+  print("(1.2).toDouble() = ${(1.2).toDouble()}"); // 1.2
+  print("(1.5).toDouble() = ${(1.5).toDouble()}"); // 1.5
+  print("(1.7).toDouble() = ${(1.7).toDouble()}"); // 1.7
+  print("(1).toDouble() = ${(1).toDouble()}"); // 1.0
+  print("(-0.1).toDouble() = ${(-0.1).toDouble()}"); // -0.1
+  print("(-0.5).toDouble() = ${(-0.5).toDouble()}"); // -0.5
+  print("(-0.7).toDouble() = ${(-0.7).toDouble()}"); // -0.7
+  print("(-0.0).toDouble() = ${(-0.0).toDouble()}"); // -0.0
+  print("(-1.0).toDouble() = ${(-1.0).toDouble()}"); // -1.0
+  print("infinitePlus.toDouble() = ${infinitePlus.toDouble()}"); // Infinity
+  print("infiniteMinus.toDouble() = ${infiniteMinus.toDouble()}"); // -Infinity
+  print("nanRes.toDouble() = ${nanRes.toDouble()}"); // NaN
+
+  print("-----------------------------------");
+  
+  // toString
+  print("(0.000001).toString() = \"${(0.000001).toString()}\"");  // "0.000001"
+  print("(0.0000001).toString() = \"${(0.0000001).toString()}\""); // "1e-7"
+  print("(111111111111111111111.0).toString() = \"${(111111111111111111111.0).toString()}\""); // "111111111111111110000.0"
+  print("(100000000000000000000.0).toString() = \"${(100000000000000000000.0).toString()}\""); // "100000000000000000000.0"
+  print("(1000000000000000000000.0).toString() = \"${(1000000000000000000000.0).toString()}\""); // "1e+21"
+  print("(1111111111111111111111.0).toString() = \"${(1111111111111111111111.0).toString()}\""); // "1.1111111111111111e+21"
+  print("1.toString() = \"${1.toString()}\""); // "1"
+  print("1111111111111111111.toString() = \"${1111111111111111111.toString()}\""); // "1111111111111111111"
+  print("1000000000000000000.toString() = \"${1000000000000000000.toString()}\""); // "1000000000000000000"
+  print("1.234e5.toString() = \"${1.234e5.toString()}\""); // "123400.0"
+  print("1234.5e6.toString() = \"${ 1234.5e6.toString()}\""); // "1234500000.0"
+  print("12.345e67.toString() = \"${12.345e67.toString()}\""); // 1.2345e+68"
+  print("infinitePlus.toString() = \"${infinitePlus.toString()}\""); // "Infinity"
+  print("infiniteMinus.toString() = \"${infiniteMinus.toString()}\""); // "-Infinity"
+  print("nanRes.toString() = \"${nanRes.toString()}\""); // NaN"
+	
+	
 }
