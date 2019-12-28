@@ -172,7 +172,7 @@ void main() {
   print("nanRes.floorToDouble() = ${nanRes.floorToDouble()}"); // NaN
 
   print("-----------------------------------");
-  
+
   // remainder
 
   print("2.remainder(3) = ${2.remainder(3)}"); // 2
@@ -181,13 +181,13 @@ void main() {
   print("2.0.remainder(3.0) = ${2.remainder(3.0)}"); // 2.0
 
   print("-----------------------------------");
-  
+
   // round
   print("1.0.round() = ${1.0.round()}"); // 1
   print("1.2.round() = ${1.2.round()}"); // 1
   print("1.5.round() = ${1.5.round()}"); // 2
   print("1.7.round() = ${1.7.round()}"); // 2
-  
+
   print("-0.0.round() = ${0.0.round()}"); // 0
   print("-0.2.round() = ${-0.2.round()}"); // 0
   print("-0.5.round() = ${-0.5.round()}"); // -1
@@ -206,14 +206,14 @@ void main() {
   print("-1.0.roundToDouble() = ${-1.0.roundToDouble()}"); // -1.0
 
   print(
-		  "infinitePlus.roundToDouble() = ${infinitePlus.roundToDouble()}"); // Infinity
+      "infinitePlus.roundToDouble() = ${infinitePlus.roundToDouble()}"); // Infinity
   print(
-		  "infiniteMinus.roundToDouble() = ${infiniteMinus.roundToDouble()}"); // -Infinity
+      "infiniteMinus.roundToDouble() = ${infiniteMinus.roundToDouble()}"); // -Infinity
   print("nanRes.roundToDouble() = ${nanRes.roundToDouble()}"); // Na
 
   print("-----------------------------------");
-  
-	// to
+
+  // to
 
   // toInt
   print("(0.1).toInt() = ${(0.1).toInt()}"); // 0
@@ -245,23 +245,111 @@ void main() {
   print("nanRes.toDouble() = ${nanRes.toDouble()}"); // NaN
 
   print("-----------------------------------");
-  
+
   // toString
-  print("(0.000001).toString() = \"${(0.000001).toString()}\"");  // "0.000001"
+  print("(0.000001).toString() = \"${(0.000001).toString()}\""); // "0.000001"
   print("(0.0000001).toString() = \"${(0.0000001).toString()}\""); // "1e-7"
-  print("(111111111111111111111.0).toString() = \"${(111111111111111111111.0).toString()}\""); // "111111111111111110000.0"
-  print("(100000000000000000000.0).toString() = \"${(100000000000000000000.0).toString()}\""); // "100000000000000000000.0"
-  print("(1000000000000000000000.0).toString() = \"${(1000000000000000000000.0).toString()}\""); // "1e+21"
-  print("(1111111111111111111111.0).toString() = \"${(1111111111111111111111.0).toString()}\""); // "1.1111111111111111e+21"
+  print(
+      "(111111111111111111111.0).toString() = \"${(111111111111111111111.0).toString()}\""); // "111111111111111110000.0"
+  print(
+      "(100000000000000000000.0).toString() = \"${(100000000000000000000.0).toString()}\""); // "100000000000000000000.0"
+  print(
+      "(1000000000000000000000.0).toString() = \"${(1000000000000000000000.0).toString()}\""); // "1e+21"
+  print(
+      "(1111111111111111111111.0).toString() = \"${(1111111111111111111111.0).toString()}\""); // "1.1111111111111111e+21"
   print("1.toString() = \"${1.toString()}\""); // "1"
-  print("1111111111111111111.toString() = \"${1111111111111111111.toString()}\""); // "1111111111111111111"
-  print("1000000000000000000.toString() = \"${1000000000000000000.toString()}\""); // "1000000000000000000"
+  print(
+      "1111111111111111111.toString() = \"${1111111111111111111.toString()}\""); // "1111111111111111111"
+  print(
+      "1000000000000000000.toString() = \"${1000000000000000000.toString()}\""); // "1000000000000000000"
   print("1.234e5.toString() = \"${1.234e5.toString()}\""); // "123400.0"
-  print("1234.5e6.toString() = \"${ 1234.5e6.toString()}\""); // "1234500000.0"
+  print("1234.5e6.toString() = \"${1234.5e6.toString()}\""); // "1234500000.0"
   print("12.345e67.toString() = \"${12.345e67.toString()}\""); // 1.2345e+68"
-  print("infinitePlus.toString() = \"${infinitePlus.toString()}\""); // "Infinity"
-  print("infiniteMinus.toString() = \"${infiniteMinus.toString()}\""); // "-Infinity"
+  print(
+      "infinitePlus.toString() = \"${infinitePlus.toString()}\""); // "Infinity"
+  print(
+      "infiniteMinus.toString() = \"${infiniteMinus.toString()}\""); // "-Infinity"
   print("nanRes.toString() = \"${nanRes.toString()}\""); // NaN"
-	
-	
+
+  print("-----------------------------------");
+
+  // toStringAsExponential
+  print("1.toStringAsExponential() = \"${1.toStringAsExponential()}\""); // "1e+0"
+  print("1.toStringAsExponential(3) = \"${1.toStringAsExponential(3)}\""); // "1.000e+0"
+  print("123456.toStringAsExponential() = \"${123456.toStringAsExponential()}\""); // "1.23456e+5"
+  print("123456.toStringAsExponential(3) = \"${123456.toStringAsExponential(3)}\""); // "1.235e+5"
+  print("123456.toStringAsExponential(0) = \"${123456.toStringAsExponential(0)}\""); // "1e+5"
+
+  print("-----------------------------------");
+  
+  // toStringAsFixed
+  
+  print("1.toStringAsFixed(3) = \"${1.toStringAsFixed(3)}\""); // "1.000"
+  print("(4321.12345678).toStringAsFixed(3) = \"${(4321.12345678).toStringAsFixed(3)}\""); // "4321.123"
+  print("(4321.12345678).toStringAsFixed(5) = \"${(4321.12345678).toStringAsFixed(5)}\""); // "4321.12346"
+  print("(123456789012345678901.0).toStringAsFixed(3) = \"${(123456789012345678901.0).toStringAsFixed(3)}\""); // "123456789012345683968.000"
+  print("(1000000000000000000000.0).toStringAsFixed(3) = \"${(1000000000000000000000.0).toStringAsFixed(3)}\""); // "1e+21"
+  print("5.25.toStringAsFixed(0) = \"${5.25.toStringAsFixed(0)}\""); // "5"
+
+  print("-----------------------------------");
+  
+  // toStringAsPrecision
+  print("1.toStringAsPrecision(2) = \"${1.toStringAsPrecision(2)}\""); // "1.0"
+  print("1e15.toStringAsPrecision(3) = \"${1e15.toStringAsPrecision(3)}\""); // "1.00e+15"
+  print("1234567.toStringAsPrecision(3) = \"${1234567.toStringAsPrecision(3)}\""); // "1.23e+6"
+  print("1234567.toStringAsPrecision(9) = \"${1234567.toStringAsPrecision(9)}\""); // "1234567.00"
+  print("(12345678901234567890.0).toStringAsPrecision(20) = \"${(12345678901234567890.0).toStringAsPrecision(20)}\""); // "12345678901234567168"
+  print("(12345678901234567890.0).toStringAsPrecision(20) = \"${(12345678901234567890.0).toStringAsPrecision(14)}\""); // "1.2345678901235e+19"
+  print("0.00000012345.toStringAsPrecision(15) = \"${0.00000012345.toStringAsPrecision(15)}\""); // "1.23450000000000e-7"
+  print("0.0000012345.toStringAsPrecision(15) = \"${0.0000012345.toStringAsPrecision(15)}\""); // "0.00000123450000000000"
+
+  print("-----------------------------------");
+  
+  // truncate
+  print("1.truncate() = ${1.truncate()}"); // 1
+  print("(1.222).truncate() = ${(1.222).truncate()}"); // 1
+  print("(0.222).truncate() = ${(0.222).truncate()}"); // 0
+  print("(-0.222).truncate() = ${(-0.222).truncate()}"); // 0
+  print("(-1.222).truncate() = ${(-1.222).truncate()}"); // -1
+
+  print("-----------------------------------");
+  
+  // truncate
+  print("1.truncateToDouble() = ${1.truncateToDouble()}"); // 1.0
+  print("(1.0).truncateToDouble() = ${(1.0).truncateToDouble()}"); // 1.0
+  print("(1.222).truncateToDouble() = ${(1.222).truncateToDouble()}"); // 1.0
+  print("(0.222).truncateToDouble() = ${(0.222).truncateToDouble()}"); // 0.0
+  print("(-0.222).truncateToDouble() = ${(-0.222).truncateToDouble()}"); // -0.0
+  print("(-1.222).truncateToDouble() = ${(-1.222).truncateToDouble()}"); // -1.0
+  print("infinitePlus.truncateToDouble() = ${infinitePlus.truncateToDouble()}"); // Infinity
+  print("infiniteMinus.truncateToDouble() = ${infiniteMinus.truncateToDouble()}"); // -Infinity
+  print("nanRes.truncateToDouble() = ${nanRes.truncateToDouble()}"); // -NaN
+  
+  // operate
+  var num1 = 1;
+  var num2 = 3;
+  
+  print("$num1 % $num2 = ${num1 % num2}"); // 1
+  print("$num1 * $num2 = ${num1 * num2}"); // 3
+  print("$num1 + $num2 = ${num1 + num2}"); // 4
+  print("$num1 - $num2 = ${num1 - num2}"); // -2
+  print("$num1 < $num2 = ${num1 < num2}"); // true
+  print("$num1 <= $num2 = ${num1 <= num2}"); // true
+  print("$num1 > $num2 = ${num1 > num2}"); // false
+  print("$num1 >= $num2 = ${num1 >= num2}"); // false
+  print("$num1 == $num2 = ${num1 == num2}"); // false
+  print("-$num1  = ${-num1}");
+  print("$num1  ~/ $num2 = ${num1  ~/ num2}"); // 0
+  print("1.0  ~/ 3.0 = ${1.0  ~/ 3.0}"); // 0
+  
+  // parse
+  
+  var p1 = num.parse("1.0a",(input){
+    return 2;
+  }); // 2
+  var p2 = num.tryParse("1.0a") ?? 2;
+  print("p1 = $p1");
+  print("p2 = $p2");
+  
+  
 }
