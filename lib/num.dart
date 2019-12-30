@@ -350,6 +350,35 @@ void main() {
   var p2 = num.tryParse("1.0a") ?? 2;
   print("p1 = $p1");
   print("p2 = $p2");
+
+  print("-----------------------------------");
+  
+  // int
+  
+  // bitLength
+  print("3.bitLength = ${3.bitLength}"); // 00000011
+  print("2.bitLength = ${2.bitLength}"); // 00000010
+  print("1.bitLength = ${1.bitLength}"); // 00000001
+  print("0.bitLength = ${0.bitLength}"); // 00000000
+  print("(-1).bitLength = ${(-1).bitLength}"); // 11111111
+  print("(-2).bitLength = ${(-2).bitLength}"); // 11111110
+  print("(-3).bitLength = ${(-3).bitLength}"); // 11111101
+  print("(-4).bitLength = ${(-4).bitLength}");  // 11111100
+
+  // isEven
+  print("(1).isEven = ${(1).isEven}");  // false
+  print("(2).isEven = ${(2).isEven}");  // true
+
+  // isOdd
+  print("(1).isOdd = ${(1).isOdd}");  // true
+  print("(2).isOdd = ${(2).isOdd}");  // false
+  
+  // gcd
+  print("3.gcd(12) = ${3.gcd(12)}"); // 3
+  
+  // modInverse
+  print("5.modInverse(14) = ${5.modInverse(14)}"); // 3
+
   
   
 }
