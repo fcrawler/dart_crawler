@@ -379,6 +379,32 @@ void main() {
   // modInverse
   print("5.modInverse(14) = ${5.modInverse(14)}"); // 3
 
+  // toRadixString
+  print("14.toRadixString(6) = ${14.toRadixString(6)}"); // 22
+  print("14.toRadixString(8) = ${14.toRadixString(8)}"); // 16
+  print("14.toRadixString(16) = ${14.toRadixString(16)}"); // e
   
+  // operate
+  print("1 & 3 = ${1 & 3}"); // 1
+  print("-1 & 3 = ${-1 & 3}"); // 3
+  print("1 & -3 = ${1 & -3}"); // 1
+  print("-1 & -3 = ${-1 & -3}"); // -3
   
+  print("1 << 3 = ${1 << 3}"); // 8
+  print("8 >> 3 = ${8 >> 3}"); // 1
+  print("1 ^ 3 = ${1 ^ 3}"); // 2
+  print("1 | 3 = ${1 | 3}"); // 3
+  print("~1 = ${~1}"); // -2
+  
+  print("$num1 % $num2 = ${num1 % num2}"); // 1
+  print("$num1 * $num2 = ${num1 * num2}"); // 3
+  print("$num1 + $num2 = ${num1 + num2}"); // 4
+  print("$num1 - $num2 = ${num1 - num2}"); // -2
+  print("$num1 < $num2 = ${num1 < num2}"); // true
+  print("$num1 <= $num2 = ${num1 <= num2}"); // true
+  print("$num1 > $num2 = ${num1 > num2}"); // false
+  print("$num1 >= $num2 = ${num1 >= num2}"); // false
+  print("$num1 == $num2 = ${num1 == num2}"); // false
+  print("-$num1  = ${-num1}");
+  print("$num1  ~/ $num2 = ${num1  ~/ num2}"); // 0
 }
