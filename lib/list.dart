@@ -1,6 +1,40 @@
-import 'dart:math';
-
 void main() {
+  // 创建List
+  List fixedLengthList = new List(3);
+  var flen =
+      fixedLengthList.length; // fixedLengthList: [null, null, null], flen: 3
+
+  print("fixedLengthList: $fixedLengthList, flen: ${flen}");
+
+  List growableList = new List();
+  var glength = growableList.length; // growableList: [], fleglengthn: 0
+  print("growableList: $growableList, fleglengthn: ${glength}");
+
+  List growableList1 = List()..length = 3;
+  var glength1 =
+      growableList1.length; // growableList1: [null, null, null], glength1: 3
+  growableList1.add(1); // growableList1: [null, null, null, 1], glength1: 4
+
+  print("growableList1: $growableList1, glength1: ${glength1}");
+
+  // List.filled
+  var listFill = List<String>.filled(3, "A"); // listFill: [A, A, A], length: 3
+  print("listFill: $listFill, length: ${listFill.length}");
+
+  var listFill1 = List<String>.filled(3, "A",
+      growable: true); // listFill1: [A, A, A], length: 3
+  print("listFill1: $listFill1, length: ${listFill1.length}");
+  listFill1.add("B"); // listFill1: [A, A, A, B], length: 4
+  print("listFill1: $listFill1, length: ${listFill1.length}");
+
+  var listFill2 = List<String>.filled(3, "A", growable: true)
+    ..length = 5; // listFill2: [A, A, A, null, null], length: 5
+  print("listFill2: $listFill2, length: ${listFill2.length}");
+
+  // List.generate
+  var listGenerate = List.generate(4, (index) => index * index); // listGenerate: [0, 1, 4, 9], length: 4
+  print("listGenerate: $listGenerate, length: ${listGenerate.length}");
+
   // index
   var list = [1, 2, 3];
 //	var first = list[0]; // 1
@@ -270,8 +304,10 @@ void main() {
 
   // singleWhere
   var listSingleWhere = ["A1", "A2", "B1", "B2", "C1"];
-  var sw1 = listSingleWhere.singleWhere((ele) => ele.startsWith("C"), orElse: () => "None"); // "C1"
-  var sw2 = listSingleWhere.singleWhere((ele) => ele.startsWith("F"), orElse: () => "None"); // None
+  var sw1 = listSingleWhere.singleWhere((ele) => ele.startsWith("C"),
+      orElse: () => "None"); // "C1"
+  var sw2 = listSingleWhere.singleWhere((ele) => ele.startsWith("F"),
+      orElse: () => "None"); // None
   print("sw1: $sw1");
   print("sw2: $sw2");
 
@@ -294,51 +330,52 @@ void main() {
   var listMap = [1, 2, 3];
   var map = listMap.map((ele) => "A$ele"); // [A1, A2, A3]
   print("map: $map");
-  
+
   // skip
   var listSkip = [1, 2, 3, 4];
   Iterable skip1 = listSkip.skip(2); // (3, 4)
   Iterable skip2 = listSkip.skip(4); // ()
   print("skip1: $skip1");
   print("skip2: $skip2");
-  
+
   // take
   var listTake = [1, 2, 3, 4];
   Iterable take1 = listTake.take(2); // take1: (1, 2), length: 2
   Iterable take2 = listTake.take(6); // take2: (1, 2, 3, 4), length: 4
   print("take1: $take1, length: ${take1.length}");
   print("take2: $take2, length: ${take2.length}");
-  
+
   // takeWhile
   var listTakeWhile = ["A1", "A2", "B1", "B2", "C1"];
-  var takeWhile1 = listTakeWhile.takeWhile((ele) => ele.startsWith("A")); // ["A1", "A2"]
+  var takeWhile1 =
+      listTakeWhile.takeWhile((ele) => ele.startsWith("A")); // ["A1", "A2"]
   var takeWhile2 = listTakeWhile.takeWhile((ele) => ele.startsWith("F")); // []
   print("takeWhile1: $takeWhile1");
   print("takeWhile2: $takeWhile2");
-  
+
   // toList
   var listToL = [1, 2, 3];
   var ltl1 = listToL.toList(); // [1, 2, 3]
   var ltl2 = listToL.toList(growable: false); // [1, 2, 3]
-  
+
   print("ltl1: $ltl1");
   print("ltl2: $ltl2");
-  
+
   // toSet
   var listSet = [1, 2, 3, 1, 2];
   var set = listSet.toSet(); // {1, 2, 3}
   print("set: $set");
-  
+
   // where
   var listWhere = [1, 2, 3];
   Iterable<int> lw = listWhere.where((ele) => ele > 1); // (2, 3)
   print("lw: $lw");
-  
+
   // whereType
   List<Object> listWt = [1, 2, "A", "B", true, false];
   Iterable whereType = listWt.whereType<int>(); // (1, 2)
   print("whereType: $whereType");
-  
+
   // 及早求值
 
   // fold
@@ -365,49 +402,49 @@ void main() {
 
   var reduce = listReduce.reduce((pre, ele) => pre * ele); // 24
   print("reduce: $reduce");
-  
+
   // operate
   // +
   var listPlus1 = [1, 2, 3];
   var listPlus2 = [11, 12, 13];
   var listPlus = listPlus1 + listPlus2; // [1, 2, 3, 11, 12, 13]
-  
+
   print("listPlus: $listPlus");
-  
+
   // ==
   var listEqu1 = [1, 2, 3];
   var listEqu2 = [1, 2, 3];
   var equ1 = listEqu1 == listEqu1; // true
   var equ2 = listEqu1 == listEqu2; // false
-  
+
   print("equ1: $equ1");
   print("equ2: $equ2");
-  
+
   // []
   var listOpe1 = [1, 2, 3];
   var eleOne = listOpe1[1]; // 2
   print("eleOne: $eleOne");
-  
+
   // []=
   listOpe1[1] = 4; // 1, 4, 3]
   print("listOpe1: $listOpe1");
-  
+
   // castFrom
   List<Object> listObj = [1, 2.6, 3, 1.4];
   List<num> listCastFrom = List.castFrom(
       listObj); // listCastFrom: [1, 2.6, 3, 1.4], listObj == listCastFrom = false
   print(
       "listCastFrom: $listCastFrom, listObj == listCastFrom = ${listCastFrom == listObj}");
-  
+
   // copyRange
   var listTar = [1, 2, 3, 4, 5, 6];
   var listSou = [11, 12, 13];
   List.copyRange(listTar, 1, listSou); // [1, 11, 12, 13, 5, 6]
   print("listTar: $listTar");
-  
+
   // writeIterable
   var listWriteTar = [1, 2, 3, 4, 5, 6];
-  Iterable iterableSou = {11, 12,13};
+  Iterable iterableSou = {11, 12, 13};
   List.writeIterable(listWriteTar, 1, iterableSou); // [1, 11, 12, 13, 5, 6]
   print("listWriteTar: $listWriteTar");
 }
