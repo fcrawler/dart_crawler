@@ -34,6 +34,10 @@ void main() {
   // List.generate
   var listGenerate = List.generate(4, (index) => index * index); // listGenerate: [0, 1, 4, 9], length: 4
   print("listGenerate: $listGenerate, length: ${listGenerate.length}");
+  
+  // List.of
+  var listOf = List.of([1, 2, 3]); // listOf: [1, 2, 3], length: 3
+  print("listOf: $listOf, length: ${listOf.length}");
 
   // index
   var list = [1, 2, 3];
