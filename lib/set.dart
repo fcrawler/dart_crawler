@@ -1,5 +1,21 @@
 void main() {
 	
+	// Set()
+	var setDef = Set<int>(); // runtimeType: _CompactLinkedHashSet<int>, length: 0
+	print("runtimeType: ${setDef.runtimeType}, length: ${setDef.length}");
+	
+	// Set.from
+	var setFrom = Set.from([1, 2, 3, 1, 2, 3]); // setFrom: {1, 2, 3}, length: 3
+	print("setFrom: $setFrom, length: ${setFrom.length}");
+	
+	// Set.identity
+	var setIdentity = Set.identity(); // {}
+	
+	// Set.of
+	var setOf = Set.of([1, 2, 3]); // setOf: {1, 2, 3}, length: 3
+	print("setOf: $setOf, length: ${setOf.length}");
+	
+	
 	// 声明一个Set
 	var levelSet = {"A", "B", "C"};
 	
