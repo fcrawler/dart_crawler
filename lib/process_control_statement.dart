@@ -21,6 +21,7 @@ void main() {
     print("value: $value");
   }
 
+  // while & do-while
   var isDone = 0;
   while (isDone < 5) {
     print("isDone: $isDone");
@@ -33,6 +34,7 @@ void main() {
     isDone++;
   } while (isDone < 5);
 
+  // break & continue
   for (int i = 0; i < 5; i++) {
 	  print("i: $i");
 	  if (i > 2) {
@@ -46,4 +48,32 @@ void main() {
 	  }
 	  print("i: $i");
   }
+  
+  // switch & case
+  var command = 'OPEN';
+  switch (command) {
+	  case 'CLOSED':
+		  executeClosed();
+		  break;
+	  case 'PENDING':
+		  executePending();
+		  break;
+	  case 'OPEN':
+		  executeOpen();
+		  break;
+	  default:
+		  executeUnknown();
+  }
+}
+
+void executeUnknown() {
+}
+
+void executeOpen() {
+}
+
+void executePending() {
+}
+
+void executeClosed() {
 }
