@@ -24,11 +24,21 @@ void main() {
 	
 	
 	var pConst1 = const Point(0.1, 0.5);
-	var pConst2 = const Point(0.2, 0.6);
+	var pConst2 = const Point(0.1, 0.5);
+	var pConst3 = const Point(0.2, 0.6);
 	
-	print("pConst1: $pConst1");
-	print("pConst2: $pConst2");
+	print("pConst1: $pConst1"); // pConst1: Point{x: 0.1, y: 0.5}
+	print("pConst2: $pConst2"); // pConst2: Point{x: 0.1, y: 0.5}
+	print("pConst3: $pConst3"); // pConst3: Point{x: 0.2, y: 0.6}
+	print("${identical(pConst1, pConst2)}"); // true
+	print("${identical(pConst1, pConst3)}"); // false
 	
+	// 对象类型
+	var pType = const Point(0.1, 0.5);
+	Type type = pType.runtimeType; // Point
+	print("type: $type");
+	
+	// 实例变量
 	
 }
 
@@ -48,7 +58,6 @@ class Person {
 	}
 }
 
-
 class Point {
 	final double x;
 	final double y;
@@ -62,3 +71,7 @@ class Point {
 	
 	
 }
+
+
+
+
