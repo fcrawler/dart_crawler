@@ -33,7 +33,7 @@ void main() {
   print("doubleMultiline : \n $doubleMultiline");
   
   // 3. 字符串插值
-  var person = Person(20, "Job");
+  var person = Person( "Job", 20);
   var aa = "aa";
   var bb = "$aa, ${5 + 6}, $person"; // bb: aa, 11, Person{age: 20, name: Job}
   print("bb: $bb");
