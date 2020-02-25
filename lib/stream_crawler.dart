@@ -242,8 +242,16 @@ void testAny() async {
 }
 
 void testExpand() {
-
   var list = [1, 2, 3];
+  Stream<int>.fromIterable(list).expand((ele) {
+    var listData = List<String>();
+
+    for (int i = 0; i < ele; i++) {
+      listData.add("A - $i");
+    }
+
+    return listData;
+  }).listen((data) => print("data: $data"));
 }
 
 void testEsyncExpand() {
@@ -284,6 +292,8 @@ void testElementAt() async {
   print("value: $value");
 }
 
+void testFirstWhere(){}
+
 void main() {
   Stream timeStream = timeCounter(Duration(seconds: 1));
 
@@ -319,9 +329,12 @@ void main() {
 //  testAsBroadcast();
 
 //  testAny();
+//  testExpand();
 //  testEsyncExpand();
 //  testAsyncMapMap();
 //  testDistinct();
 //  testDrain();
-  testElementAt();
+//  testElementAt();
+
+
 }
