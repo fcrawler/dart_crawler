@@ -382,7 +382,6 @@ void testPipe() {
   controller1.stream.transform(doubler).pipe(controller2);
   controller2.stream.listen((data) => print(data));
 
-  StreamTransformerBase
 }
 
 
