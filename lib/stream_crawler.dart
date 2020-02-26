@@ -292,7 +292,100 @@ void testElementAt() async {
   print("value: $value");
 }
 
-void testFirstWhere(){}
+void testFirstWhere() async {
+  var list = [1, 2, 3];
+  Future<int> future = Stream<int>.fromIterable(list)
+      .firstWhere((ele) => ele > 1, orElse: () => -1);
+  int value = await future;
+  print("value: $value");
+}
+
+void testFold() async {
+  List<Price> listPrice = [
+    Price("apple", 10),
+    Price("orange", 20),
+    Price("banana", 30)
+  ];
+  Future<int> future = Stream<Price>.fromIterable(listPrice)
+      .fold<int>(0, (pre, ele) => pre + ele.price);
+
+  int value = await future;
+  print("value: $value");
+}
+
+class Price {
+  final String name;
+  final int price;
+
+  Price(this.name, this.price);
+}
+
+void testForEach() async {
+  Stream.periodic(Duration(seconds: 1), (count) => count)
+      .forEach((ele) => print("ele: $ele"));
+}
+
+void testHandleError() async {
+  Future<String> f1 = Future.delayed(Duration(seconds: 1), () => "I'm from f1");
+  Future<String> f2 = Future.delayed(Duration(seconds: 2), () => "I'm from f2");
+  Future<String> fError = Future.delayed(Duration(seconds: 3),
+      () => Future<String>.error("This is a error future"));
+  Future<String> f3 = Future.delayed(Duration(seconds: 4), () => "I'm from f3");
+  Stream<String> stream = Stream<String>.fromFutures([f1, fError, f2, f3]);
+  stream
+      .handleError((error) => print("handle error: $error"))
+      .listen((data) => print("data: $data"), onDone: () => print("on done"));
+}
+
+void testJoin() async {
+  var list = [1, 2, 3];
+
+  Future<String> future = Stream.fromIterable(list).join("_");
+
+  String value = await future;
+  print("value: $value");
+}
+
+void testLastWhere() async {
+  var list = [1, 2, 3];
+  Future<int> future = Stream<int>.fromIterable(list)
+      .lastWhere((ele) => ele % 2 != 0, orElse: () => -1);
+  int value = await future;
+  print("value: $value");
+}
+
+void testListen() async {
+  Future<String> f1 = Future.delayed(Duration(seconds: 1), () => "I'm from f1");
+  Future<String> f2 = Future.delayed(Duration(seconds: 2), () => "I'm from f2");
+  Future<String> fError = Future.delayed(Duration(seconds: 3),
+      () => Future<String>.error("This is a error future"));
+  Future<String> f3 = Future.delayed(Duration(seconds: 4), () => "I'm from f3");
+  Stream<String> stream = Stream<String>.fromFutures([f1, fError, f2, f3]);
+  stream.listen((data) => print("data: $data"),
+      onError: ((error) => print("onError: $error")),
+      onDone: () => print("on done"),
+      cancelOnError: true);
+}
+
+void testPipe() {
+  var stream = Stream.fromIterable([1, 2, 3, 4, 5]);
+  final controller1 = new StreamController();
+  final controller2 = new StreamController();
+
+  controller1.addStream(stream);
+
+  final doubler =
+  new StreamTransformer.fromHandlers(handleData: (data, sink) {
+    sink.add(data * 2);
+  });
+
+  controller1.stream.transform(doubler).pipe(controller2);
+  controller2.stream.listen((data) => print(data));
+
+  StreamTransformerBase
+}
+
+
 
 void main() {
   Stream timeStream = timeCounter(Duration(seconds: 1));
@@ -335,6 +428,12 @@ void main() {
 //  testDistinct();
 //  testDrain();
 //  testElementAt();
-
-
+//  testFirstWhere();
+//  testFold();
+//  testForEach();
+//  testHandleError();
+//  testJoin();
+//  testLastWhere();
+//  testListen();
+  testPipe();
 }
