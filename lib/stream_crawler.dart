@@ -374,17 +374,107 @@ void testPipe() {
 
   controller1.addStream(stream);
 
-  final doubler =
-  new StreamTransformer.fromHandlers(handleData: (data, sink) {
+  final doubler = new StreamTransformer.fromHandlers(handleData: (data, sink) {
     sink.add(data * 2);
   });
 
   controller1.stream.transform(doubler).pipe(controller2);
   controller2.stream.listen((data) => print(data));
-
 }
 
+void testReduce() async {
+  var list = [WorkTime("A", 10), WorkTime("B", 14), WorkTime("C", 6)];
+  Future<WorkTime> future = Stream<WorkTime>.fromIterable(list)
+      .reduce((pre, ele) => WorkTime("total", pre.time + ele.time));
+  var value = await future;
+  print("value: $value");
+}
 
+class WorkTime {
+  final String type;
+  final int time;
+
+  WorkTime(this.type, this.time);
+
+  @override
+  String toString() {
+    return 'WorkTime{type: $type, time: $time}';
+  }
+}
+
+void testSingleWhere() async {
+  var list = ["A1", "A2", "B1", "C1", "C2"];
+
+  Future<String> future = Stream<String>.fromIterable(list)
+      .singleWhere((ele) => ele.startsWith("B"), orElse: () => "-1");
+
+  var value = await future;
+  print("value: $value");
+}
+
+void testSkip() async {
+  Stream<int> stream =
+      Stream<int>.periodic(Duration(seconds: 1), (count) => count).skip(3);
+  stream.listen((data) => print("data: $data"),
+      onError: ((error) => print("onError: $error")),
+      onDone: () => print("on done"),
+      cancelOnError: true);
+}
+
+void testTake() async {
+  Stream<int> stream =
+      Stream<int>.periodic(Duration(seconds: 1), (count) => count).take(3);
+  stream.listen((data) => print("data: $data"),
+      onError: ((error) => print("onError: $error")),
+      onDone: () => print("on done"),
+      cancelOnError: true);
+}
+
+void testTimeOut() async {
+  Stream<int>.periodic(Duration(seconds: 2), (count) => count)
+      .take(3)
+      .timeout(Duration(seconds: 1), onTimeout: (sink) => sink.add(-1))
+      .listen((data) => print("data: $data"),
+          onDone: () => print("on done"), cancelOnError: true);
+}
+
+void testTransform() {
+  StreamController sc = StreamController<int>();
+
+  // 创建 StreamTransformer对象
+  StreamTransformer stf = StreamTransformer<int, double>.fromHandlers(
+    handleData: (int data, EventSink sink) {
+      // 操作数据后，转换为 double 类型
+      sink.add((data * 2).toDouble());
+    },
+    handleError: (error, stacktrace, sink) {
+      sink.addError('wrong: $error');
+    },
+    handleDone: (sink) {
+      sink.close();
+    },
+  );
+
+  // 调用流的transform方法，传入转换对象
+  Stream stream = sc.stream.transform(stf);
+
+  stream.listen(print);
+
+  // 添加数据，这里的类型是int
+  sc.add(1);
+  sc.add(2);
+  sc.add(3);
+
+  // 调用后，触发handleDone回调
+  // sc.close();
+}
+
+void testWhere() {
+  Stream<int>.periodic(Duration(seconds: 1), (count) => count)
+      .take(6)
+      .where((ele) => ele % 2 == 0)
+      .listen((data) => print("data: $data"));
+}
 
 void main() {
   Stream timeStream = timeCounter(Duration(seconds: 1));
@@ -434,5 +524,12 @@ void main() {
 //  testJoin();
 //  testLastWhere();
 //  testListen();
-  testPipe();
+//  testPipe();
+//  testReduce();
+//  testSingleWhere();
+//  testSkip();
+//  testTake();
+//  testTimeOut();
+//  testTransform();
+  testWhere();
 }
