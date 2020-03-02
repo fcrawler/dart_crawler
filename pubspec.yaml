@@ -1,0 +1,4 @@
+name: dart_crawler
+
+dependencies:
+  rxdart: ^0.23.1
