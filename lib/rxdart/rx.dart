@@ -11,7 +11,13 @@ void main() {
 
 //  testConcatEager();
 
-  testDefer();
+//  testDefer();
+
+//  testForkJoin();
+
+//  testMerge();
+
+  testRace();
 
 //  testRange();
 
@@ -70,6 +76,40 @@ void testDefer() async {
   });
   await Future.delayed(Duration(seconds: 3));
   streamDeffer.listen((data) => print("data: $data"));
+}
+
+void testForkJoin() async {
+  Rx.forkJoin([
+    Stream.value('a'),
+    Stream.fromIterable(['b', 'c', 'd'])
+  ], (list) => list.join(', '))
+      .listen((ele) => print("forkJoin : $ele")); // forkJoin : a, d
+
+  Rx.forkJoin3(Stream.value('a'), Stream.value('b'),
+          Stream.fromIterable(['c', 'd']), (a, b, c) => a + b + c)
+      .listen((ele) => print("forkJoin3 : $ele")); // forkJoin3 : abd
+}
+
+void testMerge() async {
+  Rx.merge([Rx.timer(1, Duration(seconds: 3)), Stream.value(2)])
+      .listen((ele) => print("merge: $ele"));
+  // print
+  // merge: 2
+  // merge: 1
+}
+
+void testRace() async {
+  Rx.race([
+    Rx.timer(2, Duration(seconds: 2)),
+    Rx.timer(3, Duration(seconds: 3)),
+    Rx.range(0, 3)
+  ]).listen((ele) => print("race: $ele"));
+
+  // print
+  // race: 0
+  // race: 1
+  // race: 2
+  // race: 3
 }
 
 void testRange() {
