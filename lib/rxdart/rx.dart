@@ -17,13 +17,25 @@ void main() {
 
 //  testMerge();
 
-  testRace();
+//  testRace();
 
 //  testRange();
 
 //  testRepeat();
 
+//  testRetry();
+
+//  testRetryWhen();
+
+//  testSequenceEqual();
+
+//  testSwitchLatest();
+
 //  testTimer();
+
+//  testZip();
+
+  testZipList();
 }
 
 void testCombineLatest() {
@@ -112,6 +124,75 @@ void testRace() async {
   // race: 3
 }
 
+void testRetry() async {
+  Rx.retry(() => Stream.value(1)).listen((i) => print(i));
+  // log
+  // 1
+
+  Rx.retry(() => Stream.value(1).concatWith([Stream.error(Error())]), 1)
+      .listen(print, onError: (e, s) => print(e));
+  // log
+  // 1
+  // 1
+  // Received an error after attempting 1 retries
+}
+
+void testRetryWhen() async {
+  bool errorHappened = false;
+  Rx.retryWhen(
+    () => Stream.periodic(const Duration(seconds: 1), (i) => i).map((i) {
+      if (i == 3 && !errorHappened) {
+        throw 'We can take this. Please restart.';
+      } else if (i == 4) {
+        throw 'It\'s enough.';
+      } else {
+        return i;
+      }
+    }),
+    (e, s) {
+      errorHappened = true;
+      if (e == 'We can take this. Please restart.') {
+        return Stream.value('Ok. Here you go!');
+      } else {
+        return Stream.error(e);
+      }
+    },
+  ).listen(
+    print,
+    onError: (e, s) => print(e),
+  );
+  // log
+  // 0
+  // 1
+  // 2
+  // 0
+  // 1
+  // 2
+  // 3
+  // Received an error after attempting to retry.
+}
+
+void testSequenceEqual() async {
+  Rx.sequenceEqual(Stream.fromIterable([1, 2, 3, 4, 5]),
+      Stream.fromIterable([1, 2, 3, 4, 5])).listen(print);
+  // log
+  // true
+}
+
+void testSwitchLatest() async {
+  Rx.switchLatest(Stream.fromIterable(<Stream<String>>[
+    Rx.timer('A', Duration(seconds: 2)),
+    Rx.timer('B', Duration(seconds: 1)),
+    Stream.value('C'),
+  ])).listen(print);
+
+  // Since the first two Streams do not emit data for 1-2 seconds, and the
+  // 3rd Stream will be emitted before that time, only data from the 3rd
+  // Stream will be emitted to the listener.
+  // log
+  // C
+}
+
 void testRange() {
   Rx.range(0, 4).listen((data) => print("data: $data"));
 }
@@ -123,4 +204,25 @@ void testRepeat() {
 
 void testTimer() {
   Rx.timer<int>(2, Duration(seconds: 3)).listen((data) => print("data: $data"));
+}
+
+void testZip() async {
+  Rx.zip([
+    Stream.value('Hi '),
+    Stream.fromIterable(['Friend', 'Dropped']),
+  ], (values) => values.first + values.last).listen(print);
+  // log
+  // 'Hi Friend'
+}
+
+void testZipList() async {
+  Rx.zipList(
+    [
+      Stream.value('Hi '),
+      Stream.fromIterable(['Friend', 'Dropped']),
+    ],
+  ).listen(print);
+
+  // log
+  // ['Hi ', 'Friend']
 }
