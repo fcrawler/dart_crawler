@@ -35,8 +35,15 @@ void main() {
 
 //  testZip();
 
-  testZipList();
+//  testZipList();
+
+  testPushSubject();
+
+//    testBehaviorSubject();
+
+//    testReplaySubject();
 }
+
 
 void testCombineLatest() {
   var streamChar = Rx.timer(2, Duration(seconds: 2));
@@ -225,4 +232,78 @@ void testZipList() async {
 
   // log
   // ['Hi ', 'Friend']
+}
+
+void testPushSubject() {
+  final subject = PublishSubject<int>(onListen: (){
+    // 在第一次订阅时，调用
+    print("onListen");
+  }, onCancel: (){
+    // 在第一取消订阅时，调用
+    print("onCancel");
+  });
+
+// observer1 will receive all data and done events
+  var streamSubscription1 = subject.stream.listen((ele) => print("observer1: $ele")); //
+  subject.add(1);
+  subject.add(2);
+
+// observer2 will only receive 3 and done event
+  var streamSubscription2 = subject.stream.listen((ele) => print("observer2: $ele"));
+  subject.add(3);
+  // 发送 Error
+//  subject.addError(Exception("test error"));
+  // test cancel
+//  streamSubscription1.cancel();
+//  streamSubscription2.cancel();
+  subject.close();
+  // print
+  // onListen
+  // observer1: 1
+  // observer2: 3
+  // observer1: 2
+  // observer1: 3
+  // onCancel
+}
+
+
+void testBehaviorSubject() {
+
+  final subject = BehaviorSubject<int>();
+
+  subject.stream.listen((ele) => print("observer1: $ele")); // prints 1,2,3,4,5
+
+  subject.add(1);
+  subject.add(2);
+  subject.add(3);
+
+  subject.stream.listen((ele) => print("observer2: $ele")); // prints 1,2,3,4,5
+
+  subject.add(4);
+  subject.add(5);
+
+  subject.stream.listen((ele) => print("observer3: $ele")); // prints 1,2,3,4,5
+  subject.close();
+}
+
+
+
+void testReplaySubject() {
+
+  final subject = ReplaySubject<int>(maxSize: 2);
+
+  subject.stream.listen((ele) => print("observer1: $ele")); // prints 0,1,2,3,4,5
+
+  subject.add(0);
+  subject.add(1);
+  subject.add(2);
+  subject.add(3);
+
+  subject.stream.listen((ele) => print("observer2: $ele")); // prints 2,3, 4, 5
+
+  subject.add(4);
+  subject.add(5);
+
+  subject.stream.listen((ele) => print("observer3: $ele")); // prints 4,5
+  subject.close();
 }
