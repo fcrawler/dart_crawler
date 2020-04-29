@@ -59,96 +59,132 @@ void main() {
 
 //  testPublishValue();
 
-  testPublishValueSeeded();
+//  testPublishValueSeeded();
 
+//  testShare();
+
+//  testShareReply();
+
+//  testShareValue();
+
+//  testShareValueSeeded();
+
+//  testDebounce();
+
+//  testDebounceTime();
+
+//  testDefaultIfEmpty();
+
+//  testDelay();
+
+//  testDematerialize();
+
+  testDistinctUnique();
 }
-
 
 // todo
 
-void testPush() {
-  final source = Stream.fromIterable([1, 2, 3]);
-  final ConnectableStream<int> connectable = source.publish();
-
-  // 即使已经订阅，但ConnectableStream不会从源Stream发出任何元素
-  connectable.listen((data) => print("listen1: $data")); // print: 1,2,3
-
-  connectable.listen((data) => print("listen2: $data"));// print: 1,2,3
-
-  // 指示ConnectableStream开始从源Stream发射项目。
-  final subscription = connectable.connect();
-
-  // 停止从Stream流中发送项目并关闭Subject
-  subscription.cancel();
+void testDefaultIfEmpty() {
+  Stream.empty().defaultIfEmpty(10).listen(print); // print: 10
 }
 
-void testPublishReplay() async {
-  final source = Stream.fromIterable([1, 2, 3]);
-  final ReplayConnectableStream connectable = source.publishReplay();
+void testDelay() {
+  print("start；${DateTime.now()}");
 
-  // 即使已经订阅，但ConnectableStream不会从源Stream发出任何元素
-  connectable.listen((data) => print("listen1: $data"));  // print: 1,2,3
-
-  // 指示ReplayConnectableStream开始从源Stream发射项目。
-  final subscription = connectable.connect();
-
-  await Future.delayed(Duration(seconds: 2));
-
-  // 新的订阅者将收到发出的值，最大为指定的maxSize
-  connectable.listen((data) => print("listen2: $data")); // print: 1,2,3
-
-  // 对发射元素的同步访问
-  print(connectable.values); // print: [1, 2, 3]
-
-  // 停止从Stream流中发送项目并关闭ReplaySubject
-//  subscription.cancel();
+  Stream.fromIterable([1, 2, 3, 4]).delay(Duration(seconds: 2)).listen((data) =>
+      print(
+          "data: $data, time: ${DateTime.now()}")); // 延迟2s后， prints 1, 2, 3, 4
 }
 
-void testPublishValue() async {
-  final source = Stream.fromIterable([1, 2, 3]);
-  final ValueConnectableStream connectable = source.publishValue();
+void testDematerialize() {
+  Stream<Notification<int>>.fromIterable(
+          [Notification.onData(1), Notification.onDone()])
+      .dematerialize()
+      .listen((i) => print(i)); // Prints 1
 
-  // 即使已经订阅，但ValueConnectableStream不会从源Stream发出任何元素
-  connectable.listen(print);
-
-  // 指示ValueConnectableStream开始从源Stream发射元素。
-  final subscription = connectable.connect();
-
-  await Future.delayed(Duration(seconds: 1));
-
-  // 新的监听器将接收到最新发出的值
-  connectable.listen(print); // Prints 3
-
-  // 新的订阅者将收到最新发出的值
-  print(connectable.value); // Prints 3
-
-  // 停止从Stream流中发送项目并关闭BehaviorSubject
-//  subscription.cancel();
+  Stream<Notification<int>>.fromIterable(
+          [Notification.onError(Exception(), null)])
+      .dematerialize()
+      .listen(null, onError: (e, s) {
+    print(e);
+  }); // Prints Exception
 }
 
-void testPublishValueSeeded() async {
-  final source = Stream.fromIterable([1, 2, 3]);
-  final ValueConnectableStream connectable = source.publishValueSeeded(0);
+class Stu {
+  int id;
+  String name;
+  int age;
 
-  // 即使已经订阅，但ValueConnectableStream不会从源Stream发出任何元素
-  connectable.listen(print);
+  Stu(this.id, this.name, this.age);
 
-  // 指示ValueConnectableStream开始从源Stream发射元素。
-  // 但是，ValueConnectableStream会先发射seedValue，再发射Stream中的元素。
-  // 第一个订阅者将依次接收到 0, 1, 2, 3
-  final subscription = connectable.connect();
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Stu &&
+          runtimeType == other.runtimeType &&
+          id == other.id &&
+          name == other.name &&
+          age == other.age;
 
-  await Future.delayed(Duration(seconds: 1));
+  @override
+  int get hashCode => id.hashCode ^ name.hashCode ^ age.hashCode;
 
-  // 新的监听器将接收到最新发出的值
-  connectable.listen(print); // Prints 3
-
-  // 新的订阅者将收到最新发出的值
-  print(connectable.value); // Prints 3
-
-  // 停止从Stream流中发送项目并关闭BehaviorSubject
-//  subscription.cancel();
+  @override
+  String toString() {
+    return 'Stu{id: $id, name: $name, age: $age}';
+  }
 }
+
+void testDistinctUnique() {
+  Stream.fromIterable([
+    Stu(1, "A", 19),
+    Stu(2, "A", 20),
+    Stu(3, "A", 21),
+    Stu(4, "A", 19),
+    Stu(5, "A", 20),
+    Stu(6, "A", 21),
+  ]).distinctUnique(equals: (e1, e2) {
+    return e1.age == e2.age;
+  }, hashCode: (e) {
+    return e.age;
+  }).listen(print);
+}
+
+void testDo() {
+  // doCancel
+  final subscription = TimerStream(1, Duration(minutes: 1))
+      .doOnCancel(() => print('hi'))
+      .listen(null);
+
+  subscription.cancel(); // prints 'hi'
+
+  // doOnData,doOnDone, doOnListen
+  Stream.fromIterable([1, 2, 3])
+      .doOnData(print) // prints 1, 2, 3
+      .doOnDone(() => print('all set')) // prints all set
+      .doOnListen(() => print('Is someone there?')) // print Is someone there?'
+      .listen(null);
+  // doOnEach
+  Stream.fromIterable([1])
+      .doOnEach(print)
+      .listen(null);
+  // prints
+  // Notification{kind: OnData, value: 1, errorAndStackTrace: null},
+  // Notification{kind: OnDone, value: null, errorAndStackTrace: null}
+
+  // doOnError
+  Stream.error(Exception())
+      .doOnError((error, stacktrace) => print('oh no'))
+      .listen(null); // prints 'Oh no'
+
+  // doOnPause, doOnResume
+  final subscription1 = Stream.fromIterable([1])
+      .doOnPause((ele) => print('Gimme a minute please'))
+      .doOnResume(() => print('Let\'s do this!'))
+      .listen(null);
+  subscription1.pause(); // prints 'Gimme a minute please'
+  subscription1.resume(); // prints Let's do this!
+ }
 
 // todo
 
@@ -420,9 +456,9 @@ void testBuffer() async {
     return i;
   })
       .buffer(Stream.periodic(Duration(milliseconds: 160), (j) {
-    print("j: $j, now: ${DateTime.now()}");
-    return j;
-  }))
+        print("j: $j, now: ${DateTime.now()}");
+        return j;
+      }))
       .listen(print); // prints [0, 1] [2, 3] [4, 5] ...
 }
 
@@ -443,15 +479,193 @@ void testBufferTest() {
 }
 
 void testBufferTimer() {
-
   Stream.periodic(Duration(milliseconds: 100), (int i) => i)
       .bufferTime(Duration(milliseconds: 220))
-      .listen(print); // prints [0, 1, 2] [3, 4] [5, 6] [7, 8][9, 10, 11][12, 13]...
+      .listen(
+          print); // prints [0, 1, 2] [3, 4] [5, 6] [7, 8][9, 10, 11][12, 13]...
 }
 
 void testConcatWith() {
-  TimerStream(1, Duration(seconds: 2))
-      .concatWith([Stream.fromIterable([2]), Rx.range(8, 10)])
-      .listen(print); // prints 1, 2, 8, 9, 10
+  TimerStream(1, Duration(seconds: 2)).concatWith([
+    Stream.fromIterable([2]),
+    Rx.range(8, 10)
+  ]).listen(print); // prints 1, 2, 8, 9, 10
 }
 
+void testPush() {
+  final source = Stream.fromIterable([1, 2, 3]);
+  final ConnectableStream<int> connectable = source.publish();
+
+  // 即使已经订阅，但ConnectableStream不会从源Stream发出任何元素
+  connectable.listen((data) => print("listen1: $data")); // print: 1,2,3
+
+  connectable.listen((data) => print("listen2: $data")); // print: 1,2,3
+
+  // 指示ConnectableStream开始从源Stream发射项目。
+  final subscription = connectable.connect();
+
+  // 停止从Stream流中发送项目并关闭Subject
+  subscription.cancel();
+}
+
+void testPublishReplay() async {
+  final source = Stream.fromIterable([1, 2, 3]);
+  final ReplayConnectableStream connectable = source.publishReplay();
+
+  // 即使已经订阅，但ConnectableStream不会从源Stream发出任何元素
+  connectable.listen((data) => print("listen1: $data")); // print: 1,2,3
+
+  // 指示ReplayConnectableStream开始从源Stream发射项目。
+  final subscription = connectable.connect();
+
+  await Future.delayed(Duration(seconds: 2));
+
+  // 新的订阅者将收到发出的值，最大为指定的maxSize
+  connectable.listen((data) => print("listen2: $data")); // print: 1,2,3
+
+  // 对发射元素的同步访问
+  print(connectable.values); // print: [1, 2, 3]
+
+  // 停止从Stream流中发送项目并关闭ReplaySubject
+//  subscription.cancel();
+}
+
+void testPublishValue() async {
+  final source = Stream.fromIterable([1, 2, 3]);
+  final ValueConnectableStream connectable = source.publishValue();
+
+  // 即使已经订阅，但ValueConnectableStream不会从源Stream发出任何元素
+  connectable.listen(print);
+
+  // 指示ValueConnectableStream开始从源Stream发射元素。
+  final subscription = connectable.connect();
+
+  await Future.delayed(Duration(seconds: 1));
+
+  // 新的监听器将接收到最新发出的值
+  connectable.listen(print); // Prints 3
+
+  // 新的订阅者将收到最新发出的值
+  print(connectable.value); // Prints 3
+
+  // 停止从Stream流中发送项目并关闭BehaviorSubject
+//  subscription.cancel();
+}
+
+void testPublishValueSeeded() async {
+  final source = Stream.fromIterable([1, 2, 3]);
+  final ValueConnectableStream connectable = source.publishValueSeeded(0);
+
+  // 即使已经订阅，但ValueConnectableStream不会从源Stream发出任何元素
+  connectable.listen(print);
+
+  // 指示ValueConnectableStream开始从源Stream发射元素。
+  // 但是，ValueConnectableStream会先发射seedValue，再发射Stream中的元素。
+  // 第一个订阅者将依次接收到 0, 1, 2, 3
+  final subscription = connectable.connect();
+
+  await Future.delayed(Duration(seconds: 1));
+
+  // 新的监听器将接收到最新发出的值
+  connectable.listen(print); // Prints 3
+
+  // 新的订阅者将收到最新发出的值
+  print(connectable.value); // Prints 3
+
+  // 停止从Stream流中发送项目并关闭BehaviorSubject
+//  subscription.cancel();
+}
+
+void testShare() {
+  // 将通过fromIterable创建的单订阅Stream转为广播Stream
+  final stream = Stream.fromIterable([1, 2, 3]).share();
+
+  // 订阅新的Stream，并开始发射源Stream中的数据
+  final subscription = stream.listen(print); // print 1,2,3
+
+  // 取消订阅，并关闭PublishSubject
+//  subscription.cancel();
+}
+
+void testShareReply() async {
+  // 将单订阅从Iterable Stream转换为广播Stream，该广播Stream将向任何订阅者发出最新值
+  final stream = Stream.fromIterable([1, 2, 3]).shareReplay(maxSize: 2);
+
+  // 订阅新的ReplyStream，并开始发射源Stream中的数据
+  final subscription = stream.listen(print); // print: 1, 2, 3
+
+  await Future.delayed(Duration(seconds: 1));
+
+  // 提供同步访问Stream中 maxSize个最新数据的能力。
+  print(stream.values); // print [2, 3]
+
+  await Future.delayed(Duration(seconds: 2));
+
+  // 新的订阅者将接收到最新的maxSize个元素
+  final subscription2 = stream.listen(print); // print: 2, 3
+
+  // 取消订阅，并关闭ReplaySubject
+//  subscription.cancel();
+//  subscription2.cancel();
+}
+
+void testShareValue() async {
+  // 将单订阅从Iterable Stream转换为广播ValueStream，该广播Stream将向任何订阅者发出最新值
+  final stream = Stream.fromIterable([1, 2, 3]).shareValue();
+
+  //  // 订阅新的ValueStream，并开始发射源Stream中的数据
+  final subscription = stream.listen(print); // print: 1, 2, 3
+
+  await Future.delayed(Duration(seconds: 1));
+
+  //  // 提供同步访问Stream最新发射的数据的能力
+  print(stream.value); // print: 3
+
+  await Future.delayed(Duration(seconds: 2));
+
+  // 新的订阅者将接收到最新的元素
+  final subscription2 = stream.listen(print); // print: 3
+
+  // 取消订阅，并关闭BehaviorSubject
+//  subscription.cancel();
+//  subscription2.cancel();
+}
+
+void testShareValueSeeded() async {
+  // 将单订阅从Iterable Stream转换为广播ValueStream，该广播Stream将向任何订阅者发出最新值
+  final stream = Stream.fromIterable([1, 2, 3])
+      .delay(Duration(seconds: 1))
+      .shareValueSeeded(0);
+
+  //  // 订阅新的ValueStream，并开始发射源Stream中的数据
+  final subscription = stream.listen(print); // print: 0, 1, 2, 3
+
+  await Future.delayed(Duration(seconds: 2));
+
+  //  // 提供同步访问Stream最新发射的数据的能力
+  print(stream.value); // print: 3
+
+  await Future.delayed(Duration(seconds: 2));
+
+  // 新的订阅者将接收到最新的元素
+  final subscription2 = stream.listen(print); // print: 3
+
+  // 取消订阅，并关闭BehaviorSubject
+//  subscription.cancel();
+//  subscription2.cancel();
+}
+
+void testDebounce() {
+  Stream.fromIterable([1, 2, 3, 4]).debounce((ele) {
+    print(
+        "debounce - ele: $ele, , time: ${DateTime.now()}"); // print: 1, 2, 3, 4
+    return Rx.timer(-1, Duration(seconds: 2));
+  }).listen((ele) =>
+      print("listen - ele: $ele, time: ${DateTime.now()}")); // prints 4
+}
+
+void testDebounceTime() {
+  Stream.fromIterable([1, 2, 3, 4])
+      .debounceTime(Duration(seconds: 1))
+      .listen(print); // prints 4
+}
