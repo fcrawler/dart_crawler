@@ -79,114 +79,81 @@ void main() {
 
 //  testDematerialize();
 
-  testDistinctUnique();
+//  testDistinctUnique();
+
+//  testExhaustMap();
+
+//  testFlatMap();
+
+//  testFlatMapIterable();
+
+//  testGroupBy();
+
+//  testInterval();
+
+//  testMapTo();
+
+//  testMaterialize();
+
+//  testMax();
+
+//  testMergeWith();
+
+//  testMin();
+
+//  testOnErrorResume();
+
+//  testOnErrorResumeNext();
+
+//  tesErrorReturn();
+
+//  testOnErrorReturnWith();
+
+//  testPairwise();
+
+//  testSample();
+
+//  testSampleTime();
+
+//  testScan();
+
+//  testSkipUtil();
+
+//  testStartWith();
+
+//  testStartWithMany();
+
+//  testSwitchIfEmpty();
+
+//  testSwitchMap();
+
+//  testTakeUntil();
+
+//  testThrottle();
+
+//  testThrottleTime();
+
+//  testTimeInterval();
+
+//  testTimestamp();
+
+//  testWhereType();
+
+//  testWindow();
+
+//  testWindowCount();
+
+//  testWindowTest();
+
+//  testWindowTime();
+
+//  testWithLatestFrom();
+
+//  testWithLatestList();
+
+  testZipWith();
 }
 
-// todo
-
-void testDefaultIfEmpty() {
-  Stream.empty().defaultIfEmpty(10).listen(print); // print: 10
-}
-
-void testDelay() {
-  print("start；${DateTime.now()}");
-
-  Stream.fromIterable([1, 2, 3, 4]).delay(Duration(seconds: 2)).listen((data) =>
-      print(
-          "data: $data, time: ${DateTime.now()}")); // 延迟2s后， prints 1, 2, 3, 4
-}
-
-void testDematerialize() {
-  Stream<Notification<int>>.fromIterable(
-          [Notification.onData(1), Notification.onDone()])
-      .dematerialize()
-      .listen((i) => print(i)); // Prints 1
-
-  Stream<Notification<int>>.fromIterable(
-          [Notification.onError(Exception(), null)])
-      .dematerialize()
-      .listen(null, onError: (e, s) {
-    print(e);
-  }); // Prints Exception
-}
-
-class Stu {
-  int id;
-  String name;
-  int age;
-
-  Stu(this.id, this.name, this.age);
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is Stu &&
-          runtimeType == other.runtimeType &&
-          id == other.id &&
-          name == other.name &&
-          age == other.age;
-
-  @override
-  int get hashCode => id.hashCode ^ name.hashCode ^ age.hashCode;
-
-  @override
-  String toString() {
-    return 'Stu{id: $id, name: $name, age: $age}';
-  }
-}
-
-void testDistinctUnique() {
-  Stream.fromIterable([
-    Stu(1, "A", 19),
-    Stu(2, "A", 20),
-    Stu(3, "A", 21),
-    Stu(4, "A", 19),
-    Stu(5, "A", 20),
-    Stu(6, "A", 21),
-  ]).distinctUnique(equals: (e1, e2) {
-    return e1.age == e2.age;
-  }, hashCode: (e) {
-    return e.age;
-  }).listen(print);
-}
-
-void testDo() {
-  // doCancel
-  final subscription = TimerStream(1, Duration(minutes: 1))
-      .doOnCancel(() => print('hi'))
-      .listen(null);
-
-  subscription.cancel(); // prints 'hi'
-
-  // doOnData,doOnDone, doOnListen
-  Stream.fromIterable([1, 2, 3])
-      .doOnData(print) // prints 1, 2, 3
-      .doOnDone(() => print('all set')) // prints all set
-      .doOnListen(() => print('Is someone there?')) // print Is someone there?'
-      .listen(null);
-  // doOnEach
-  Stream.fromIterable([1])
-      .doOnEach(print)
-      .listen(null);
-  // prints
-  // Notification{kind: OnData, value: 1, errorAndStackTrace: null},
-  // Notification{kind: OnDone, value: null, errorAndStackTrace: null}
-
-  // doOnError
-  Stream.error(Exception())
-      .doOnError((error, stacktrace) => print('oh no'))
-      .listen(null); // prints 'Oh no'
-
-  // doOnPause, doOnResume
-  final subscription1 = Stream.fromIterable([1])
-      .doOnPause((ele) => print('Gimme a minute please'))
-      .doOnResume(() => print('Let\'s do this!'))
-      .listen(null);
-  subscription1.pause(); // prints 'Gimme a minute please'
-  subscription1.resume(); // prints Let's do this!
- }
-
-// todo
 
 void testCombineLatest() {
   var streamChar = Rx.timer(2, Duration(seconds: 2));
@@ -668,4 +635,413 @@ void testDebounceTime() {
   Stream.fromIterable([1, 2, 3, 4])
       .debounceTime(Duration(seconds: 1))
       .listen(print); // prints 4
+}
+
+void testDefaultIfEmpty() {
+  Stream.empty().defaultIfEmpty(10).listen(print); // print: 10
+}
+
+void testDelay() {
+  print("start；${DateTime.now()}");
+
+  Stream.fromIterable([1, 2, 3, 4]).delay(Duration(seconds: 2)).listen((data) =>
+      print(
+          "data: $data, time: ${DateTime.now()}")); // 延迟2s后， prints 1, 2, 3, 4
+}
+
+void testDematerialize() {
+  Stream<Notification<int>>.fromIterable(
+          [Notification.onData(1), Notification.onDone()])
+      .dematerialize()
+      .listen((i) => print(i)); // Prints 1
+
+  Stream<Notification<int>>.fromIterable(
+          [Notification.onError(Exception(), null)])
+      .dematerialize()
+      .listen(null, onError: (e, s) {
+    print(e);
+  }); // Prints Exception
+}
+
+class Stu {
+  int id;
+  String name;
+  int age;
+
+  Stu(this.id, this.name, this.age);
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Stu &&
+          runtimeType == other.runtimeType &&
+          id == other.id &&
+          name == other.name &&
+          age == other.age;
+
+  @override
+  int get hashCode => id.hashCode ^ name.hashCode ^ age.hashCode;
+
+  @override
+  String toString() {
+    return 'Stu{id: $id, name: $name, age: $age}';
+  }
+}
+
+void testDistinctUnique() {
+  Stream.fromIterable([
+    Stu(1, "A", 19),
+    Stu(2, "A", 20),
+    Stu(3, "A", 21),
+    Stu(4, "A", 19),
+    Stu(5, "A", 20),
+    Stu(6, "A", 21),
+  ]).distinctUnique(equals: (e1, e2) {
+    return e1.age == e2.age;
+  }, hashCode: (e) {
+    return e.age;
+  }).listen(print);
+}
+
+void testDo() {
+  // doCancel
+  final subscription = TimerStream(1, Duration(minutes: 1))
+      .doOnCancel(() => print('hi'))
+      .listen(null);
+
+  subscription.cancel(); // prints 'hi'
+
+  // doOnData,doOnDone, doOnListen
+  Stream.fromIterable([1, 2, 3])
+      .doOnData(print) // prints 1, 2, 3
+      .doOnDone(() => print('all set')) // prints all set
+      .doOnListen(() => print('Is someone there?')) // print Is someone there?'
+      .listen(null);
+  // doOnEach
+  Stream.fromIterable([1]).doOnEach(print).listen(null);
+  // prints
+  // Notification{kind: OnData, value: 1, errorAndStackTrace: null},
+  // Notification{kind: OnDone, value: null, errorAndStackTrace: null}
+
+  // doOnError
+  Stream.error(Exception())
+      .doOnError((error, stacktrace) => print('oh no'))
+      .listen(null); // prints 'Oh no'
+
+  // doOnPause, doOnResume
+  final subscription1 = Stream.fromIterable([1])
+      .doOnPause((ele) => print('Gimme a minute please'))
+      .doOnResume(() => print('Let\'s do this!'))
+      .listen(null);
+  subscription1.pause(); // prints 'Gimme a minute please'
+  subscription1.resume(); // prints Let's do this!
+}
+
+void testExhaustMap() {
+  RangeStream(0, 2)
+      .interval(Duration(milliseconds: 200))
+      .exhaustMap((i) => TimerStream(i, Duration(milliseconds: 300)))
+      .listen(print); // prints 0, 2
+}
+
+void testFlatMap() {
+  RangeStream(1, 4)
+      .flatMap((i) => TimerStream(i, Duration(seconds: i)))
+      .listen(print); // prints 1, 2, 3, 4
+}
+
+void testFlatMapIterable() {
+  RangeStream(1, 4)
+      .map((ele) => List.filled(ele, ele))
+      .flatMapIterable((ele) => Stream.value(ele))
+      .listen(print); // prints 1, 2, 2, 3, 3, 3, 4, 4, 4, 4
+}
+
+void testGroupBy() {
+  Stream.fromIterable([
+    Per("A1", 19),
+    Per("A2", 20),
+    Per("B1", 19),
+    Per("B2", 19),
+    Per("C1", 21),
+  ])
+      .groupBy((ele) => ele.age)
+      .flatMap((ele) => Rx.combineLatest2(
+              Stream.value(ele.key), Stream.fromFuture(ele.toList()),
+              (key, list) {
+            return PerGroup(key, list);
+          }))
+      .listen(print);
+  // log
+  // PerGroup{age: 19, list: [Per{age: 19, name: A1}, Per{age: 19, name: B1}, Per{age: 19, name: B2}]}
+  // PerGroup{age: 20, list: [Per{age: 20, name: A2}]}
+  // PerGroup{age: 21, list: [Per{age: 21, name: C1}]}
+}
+
+class Per {
+  String name;
+  int age;
+
+  Per(this.name, this.age);
+
+  @override
+  String toString() {
+    return 'Per{age: $age, name: $name}';
+  }
+}
+
+class PerGroup {
+  int age;
+  List<Per> list;
+
+  PerGroup(this.age, this.list);
+
+  @override
+  String toString() {
+    return 'PerGroup{age: $age, list: $list}';
+  }
+}
+
+void testInterval() {
+  print("min:${DateTime.now().minute}, second: ${DateTime.now().second}");
+  Stream.fromIterable([
+    1,
+    2,
+    3
+  ]).interval(Duration(seconds: 1)).listen((i) => print(
+      '$i sec, min:${DateTime.now().minute}, second: ${DateTime.now().second}'));
+  // log
+  // min:55, second: 57
+  // 1 sec, min:55, second: 58
+  // 2 sec, min:55, second: 59
+  // 3 sec, min:56, second: 0
+}
+
+void testMapTo() {
+  Stream.fromIterable([1, 2, 3, 4])
+      .mapTo("AAA")
+      .listen(print); // prints AAA, AAA, AAA, AAA
+}
+
+void testMaterialize() {
+  Stream<int>.error(Exception()).materialize().listen((i) => print(i));
+  // log
+  // Notification{kind: Kind.OnError, value: null, error: Exception, stackTrace: null}
+  // Notification{kind: Kind.OnDone, value: null, error: null, stackTrace: null}
+
+  Stream.fromIterable([1, 2]).materialize().listen((i) => print(i));
+  // log
+  // Notification{kind: Kind.OnData, value: 1, error: null, stackTrace: null}
+  // Notification{kind: Kind.OnData, value: 2, error: null, stackTrace: null}
+  // Notification{kind: Kind.OnDone, value: null, error: null, stackTrace: null}
+}
+
+void testMax() async {
+  final max = await Stream.fromIterable([1, 2, 3]).max();
+
+  print(max); // prints 3
+
+  final stream = Stream.fromIterable(['short', 'looooooong']);
+  final max1 = await stream.max((a, b) => a.length - b.length);
+
+  print(max1); // prints 'looooooong'
+}
+
+void testMergeWith() {
+  TimerStream(1, Duration(seconds: 3)).mergeWith([
+    Stream.fromIterable([2]),
+    TimerStream(-1, Duration(seconds: 2))
+  ]).listen(print); // prints 2, -1, 1
+}
+
+void testMin() async {
+  final min = await Stream.fromIterable([1, 2, 3]).min();
+
+  print(min); // prints 1
+
+  final stream = Stream.fromIterable(['short', 'looooooong']);
+  final min1 = await stream.min((a, b) => a.length - b.length);
+
+  print(min1); // prints 'short'
+}
+
+void testOnErrorResume() {
+  Stream.error(Exception())
+      .onErrorResume(
+          (dynamic e) => Stream.fromIterable([e is StateError ? 1 : 0]))
+      .listen(print); // prints 0
+}
+
+void testOnErrorResumeNext() {
+  Stream.error(Exception())
+      .onErrorResumeNext(Stream.value(0))
+      .listen(print); // prints 0
+}
+
+void tesErrorReturn() {
+  Stream.error(Exception()).onErrorReturn(0).listen(print); // prints 0
+}
+
+void testOnErrorReturnWith() {
+  Stream.error(Exception())
+      .onErrorReturnWith((e) => e is Exception ? 1 : 0)
+      .listen(print); // prints 1
+}
+
+void testPairwise() {
+  RangeStream(1, 4).pairwise().listen(print); // prints [1, 2], [2, 3], [3, 4]
+}
+
+void testSample() {
+  Stream.periodic(Duration(milliseconds: 300), (i) => i)
+      .sample(Rx.repeat((i) => TimerStream(i, Duration(seconds: 1)), 3))
+      .listen(print); // prints 3, 6, 10
+}
+
+void testSampleTime() {
+  Stream.periodic(Duration(milliseconds: 300), (i) => i)
+      .sampleTime(Duration(seconds: 1))
+      .listen(print); // prints 3, 6, 10, ...
+}
+
+void testScan() {
+  Stream.fromIterable([1, 2, 3])
+      .scan((acc, curr, i) => acc + curr, 0)
+      .listen(print); // prints 1, 3, 6
+}
+
+void testSkipUtil() {
+  MergeStream([
+    Stream.fromIterable([1]),
+    TimerStream(2, Duration(seconds: 2))
+  ])
+      .skipUntil(TimerStream(true, Duration(seconds: 1)))
+      .listen(print); // prints 2;
+}
+
+void testStartWith() {
+  Stream.fromIterable([2]).startWith(1).listen(print); // prints 1, 2
+}
+
+void testStartWithMany() {
+  Stream.fromIterable([3])
+      .startWithMany([1, 2]).listen(print); // prints 1, 2, 3
+}
+
+void testSwitchIfEmpty() {
+  Stream<String> memory = Stream.empty();
+  Stream<String> disk = Stream.empty();
+  Stream<String> network =
+      TimerStream("I'm from network", Duration(seconds: 1));
+
+  memory
+      .switchIfEmpty(disk)
+      .switchIfEmpty(network)
+      .listen(print); // I'm from network
+}
+
+void testSwitchMap() {
+  RangeStream(4, 1)
+      .switchMap((i) => TimerStream(i, Duration(seconds: i)))
+      .switchMap((i) => Stream.value("A-$i"))
+      .listen(print); // prints A-1
+}
+
+void testTakeUntil() {
+  MergeStream([
+    Stream.fromIterable([1]),
+    TimerStream(2, Duration(seconds: 2))
+  ]).takeUntil(TimerStream(3, Duration(seconds: 1))).listen(print); // prints 1
+}
+
+void testThrottle() {
+  Stream.periodic(Duration(seconds: 1), (i) => i)
+      .throttle((_) => TimerStream(true, Duration(seconds: 2)))
+      .listen(print); // prints 0, 3, 6, ...
+}
+
+void testThrottleTime() {
+  Stream.periodic(Duration(seconds: 1), (i) => i)
+      .throttleTime(Duration(seconds: 1, milliseconds: 500))
+      .listen(print); //  prints 0, 2, 4, ...
+}
+
+void testTimeInterval() {
+  Stream.fromIterable([1, 2])
+      .interval(Duration(seconds: 2))
+      .timeInterval()
+      .listen((ele) =>
+          print("value: ${ele.value}, time: ${ele.interval.inSeconds} s"));
+  // log:
+  // value: 1, time: 2 s
+  // value: 2, time: 2 s
+}
+
+void testTimestamp() {
+  Stream.fromIterable([1]).timestamp().listen((i) => print(
+      i)); // prints 'TimeStamp{timestamp: 2020-05-17 16:12:21.042709, value: 1}';
+}
+
+void testWhereType() {
+  Stream.fromIterable([1, 'two', 3, 'four'])
+      .whereType<int>()
+      .listen(print); // prints 1, 3
+}
+
+void testWindow() {
+  Stream.periodic(Duration(milliseconds: 100), (i) => i)
+      .window(Stream.periodic(Duration(milliseconds: 160), (i) => i))
+      .asyncMap((stream) => stream.toList())
+      .listen(print); // prints [0, 1] [2, 3] [4], [5],[6, 7] ...
+}
+
+void testWindowCount() {
+  RangeStream(1, 4)
+      .windowCount(2)
+      .asyncMap((stream) => stream.toList())
+      .listen(print); // prints [1, 2], [3, 4] done!
+}
+
+void testWindowTest() {
+  Stream.periodic(Duration(milliseconds: 100), (int i) => i)
+      .windowTest((i) => i % 3 == 0)
+      .asyncMap((stream) => stream.toList())
+      .listen(print); // prints [0], [1, 2, 3] [4, 5, 6] ...
+}
+
+void testWindowTime() {
+  Stream.periodic(Duration(milliseconds: 100), (int i) => i)
+      .windowTime(Duration(milliseconds: 220))
+      .doOnData((_) => print('next window'))
+      .flatMap((s) => s)
+      .listen(print); // prints next window 0, 1, 2, next window 3, 4, ...
+}
+
+
+void testWithLatestFrom() {
+  Stream.periodic(Duration(seconds: 1), (i) => i)
+      .withLatestFrom(
+      Stream.periodic(Duration(seconds: 2), (i) => i), (a, b) => a + b)
+      .listen(print);
+
+  // prints 2,3,5,6,8,...
+}
+
+void testWithLatestList() {
+  Stream.fromIterable([1, 2]).withLatestFromList(
+    [
+      Stream.fromIterable([2, 3]),
+      Stream.fromIterable([3, 4]),
+      Stream.fromIterable([4, 5]),
+      Stream.fromIterable([5, 6]),
+      Stream.fromIterable([6, 7]),
+    ],
+  ).listen(
+      print); // print [2, 2, 3, 4, 5, 6] (由于Stream的异步性质)
+}
+
+void testZipWith() {
+  Stream.fromIterable([1])
+      .zipWith(Stream.fromIterable([2]), (one, two) => "$one - $two")
+      .listen(print); // prints 1 - 2
 }
