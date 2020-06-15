@@ -7,6 +7,9 @@ void main() {
 
   create_isolate();
 
+  // windows- path: '.\other_task.dart'
+  print("path: '.${Platform.pathSeparator}other_task.dart'");
+
   print("main isolate stop");
 }
 
