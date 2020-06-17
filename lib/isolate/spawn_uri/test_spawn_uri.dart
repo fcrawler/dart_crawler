@@ -1,4 +1,3 @@
-
 import 'dart:io';
 import 'dart:isolate';
 
@@ -18,10 +17,22 @@ create_isolate() async {
   ReceivePort rp = new ReceivePort();
   SendPort port1 = rp.sendPort;
 
-  Isolate newIsolate = await Isolate.spawnUri(
-      Uri.file(".${Platform.pathSeparator}other_task.dart"),
-      ["hello, isolate", "this is args"],
-      port1);
+  Isolate newIsolate;
+
+  if (Platform.isWindows) {
+    // wiondows
+    newIsolate = await Isolate.spawnUri(
+        Uri.file(".${Platform.pathSeparator}other_task.dart"),
+        ["hello, isolate", "this is args"],
+        port1);
+  } else {
+    String path =
+        "${Directory.current.path}/lib/isolate/spawn_uri/other_task.dart";
+    print("create_isolate path: $path");
+
+    newIsolate = await Isolate.spawnUri(Uri.file(path, windows: false),
+        ["hello, isolate", "this is args"], port1);
+  }
 
   SendPort port2;
   rp.listen((message) {
