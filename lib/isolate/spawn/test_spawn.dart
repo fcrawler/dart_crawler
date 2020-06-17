@@ -12,6 +12,7 @@ create_isolate() async{
   ReceivePort rp = new ReceivePort();
   SendPort port1 = rp.sendPort;
 
+  // 初始消息，通常包含一个SendPort，以便生成器和Spawnee可以相互通信。
   Isolate newIsolate = await Isolate.spawn(doWork, port1);
 
   SendPort port2;
